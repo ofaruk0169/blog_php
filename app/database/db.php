@@ -10,15 +10,39 @@ function dd($value) //to be deleted
 }
 
 
-function selectAll($table)
+function selectAll($table, $conditions = [])
 {
     global $conn;
     $sql = "SELECT * FROM $table";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    return $records;
+    if (empty($conditions)) {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        return $records;
+    } else {
+        // return records that match the giving conditions ...
+        // $sql = "SELECT * FROM $table WHERE username='Omar' AND admin=1";
+
+        $i = 0;
+        foreach ($conditions as $key => $value) {
+            if ($i === 0) {
+                $sql = $sql . " WHERE $key=$value";
+            } else {
+                $sql = $sql . " AND $key=$value";
+            }
+            $i++;
+            
+        }
+        dd($sql);
+
+    }
+    
 }
 
-$users = selectAll('users');
+$conditions = [
+    'admin' => 0,
+    'username' => 'Omar'
+];
+
+$users = selectAll('users', $conditions);
 dd($users);
