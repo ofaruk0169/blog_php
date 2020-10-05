@@ -9,6 +9,17 @@ function dd($value) //to be deleted
     die();
 }
 
+function executeQuery($sql, $data)
+{
+    global $conn;
+    $stmt = $conn->prepare($sql);
+    $values = array_values($data);
+    $types = str_repeat('s', count($values));
+    $stmt->bind_param($types, ...$values);
+    $stmt->execute();
+    return $stmt;
+}
+
 
 function selectAll($table, $conditions = [])
 {
@@ -20,8 +31,7 @@ function selectAll($table, $conditions = [])
         $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         return $records;
     } else {
-        // return records that match the giving conditions ...
-        // $sql = "SELECT * FROM $table WHERE username='Omar' AND admin=1";
+        
 
         $i = 0;
         foreach ($conditions as $key => $value) {
@@ -34,15 +44,39 @@ function selectAll($table, $conditions = [])
             
         }
         
-        $stmt = $conn->prepare($sql);
-        $values = array_values($conditions);
-        $types = str_repeat('s', count($values));
-        $stmt->bind_param($types, ...$values);
-        $stmt->execute();
+        $stmt = executeQuery($sql, $conditions);
         $records = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         return $records;
 
     }
+    
+}
+
+function selectOne($table, $conditions)
+{
+    global $conn;
+    $sql = "SELECT * FROM $table";
+    
+
+    $i = 0;
+    foreach ($conditions as $key => $value) {
+        if ($i === 0) {
+            $sql = $sql . " WHERE $key=?";
+        } else {
+            $sql = $sql . " AND $key=?";
+        }
+        $i++;
+        
+    }
+
+    // LIMIT 1 basically means, if you find the record look no further.
+    $sql = $sql . " LIMIT 1"; 
+    
+    $stmt = executeQuery($sql, $conditions);
+    $records = $stmt->get_result()->fetch_assoc();
+    return $records;
+
+    
     
 }
 
@@ -51,5 +85,5 @@ $conditions = [
     'username' => 'Omar'
 ];
 
-$users = selectAll('users', $conditions);
+$users = selectOne('users', $conditions);
 dd($users);
