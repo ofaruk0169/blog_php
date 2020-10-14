@@ -85,7 +85,7 @@ function create($table, $data)
 {
     global $conn;
     // $sql = "INSERT INTO users SET username=?, admin=?, email=?, password=?"
-    $sql = "INSERT INTO users SET ";
+    $sql = "INSERT INTO $table SET ";
 
     $i = 0;
     foreach ($data as $key => $value) {
@@ -104,13 +104,41 @@ function create($table, $data)
 
 }
 
-$data = [
-    'username' => 'Jackson',
-    'admin' => 0,
-    'email' => 'jackbroadbent3@gmail.com',
-    'password' => 'jackson321'
-    
-];
+function update($table, $id, $data)
+{
+    global $conn;
+    // $sql = "UPDATE users SET username=?, admin=?, email=?, password=? WHERE id=?"
+    $sql = "UPDATE $table SET ";
 
-$id = create('users', $data);
+    $i = 0;
+    foreach ($data as $key => $value) {
+        if ($i === 0) {
+            $sql = $sql . " $key=?";
+        } else {
+            $sql = $sql . ", $key=?";
+        }
+        $i++;
+        
+    }
+
+    $sql = $sql . " WHERE id=?";
+    $data['id'] = $id;
+    $stmt = executeQuery($sql, $data);
+    return $stmt->affected_rows;
+
+}
+
+function delete($table, $id)
+{
+    global $conn;
+    $sql = "DELETE FROM $table WHERE id=?";
+
+    $stmt = executeQuery($sql, ['id' => $id]);
+    return $stmt->affected_rows;
+
+}
+
+
+$id = delete('users', 6);
 dd($id);
+
