@@ -23,7 +23,6 @@
 <body>
     <!-- fb page plugin sdk -->
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="75ZoQFrw"></script>
 
 
     <?php include(ROOT_PATH . "/app/includes/header.php"); ?>
@@ -59,9 +58,6 @@
                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, quisquam.</p>
                </div>
             </div>
-        </div>
-
-            <!-- end of main content  -->
 
 
             <!-- sidebar -->
@@ -108,6 +104,14 @@
 
             </div>
 
+
+        </div>
+
+            <!-- end of main content  -->
+
+
+            
+
             <!-- end of sidebar -->
         </div>
 
@@ -132,5 +136,8 @@
 
     <!-- custom script -->
     <script src="assets/js/scripts.js"></script>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="75ZoQFrw"></script>
+
 </body>
 </html>

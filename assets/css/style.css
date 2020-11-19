@@ -323,8 +323,8 @@ header .menu-toggle {
 }
 
 .content .sidebar {
-    width: 30%;
-    float: left;
+    width: 80%;
+    float: right;
     
     height: 300px;
 }
@@ -518,14 +518,14 @@ header .menu-toggle {
        
     }
 
-    .content .sidebar {
+     .content .sidebar {
         width: 100%;
         padding: 10px;
-    }
+    } 
 
-    .content .sidebar .section.search {
+     .content .sidebar .section.search {
         margin-top: 30px;
-    }
+    } 
 
     .footer {    
         height: auto;
